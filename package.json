@@ -1,7 +1,7 @@
 {
-	"name": "netjs",
+	"name": "netw0rkjs",
 	"author": "Diogny A. B.",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "internet network classes to handle IP, MAC, DHCP, CIDR, Subnets, etc",
 	"license": "MIT",
 	"main": "./dist/index.js",
@@ -35,8 +35,8 @@
 		"ts-node": "ts-node",
 		"docs": "typedoc --entryPoints src/index.ts",
 		"build": "pnpm clean && tsc -p tsconfig.json",
-		"esbuild-browser:dev": "esbuild src/index.ts --bundle --outfile=dist/netjs.js",
-		"esbuild-browser": "esbuild src/index.ts --bundle --minify --sourcemap=external --outfile=dist/netjs.min.js"
+		"esbuild-browser:dev": "esbuild src/index.ts --bundle --outfile=dist/netw0rkjs.js",
+		"esbuild-browser": "esbuild src/index.ts --bundle --minify --sourcemap=external --outfile=dist/netw0rkjs.min.js"
 	},
 	"devDependencies": {
 		"@types/jest": "^30.0.0",
