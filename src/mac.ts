@@ -58,8 +58,6 @@ export class MAC implements IMAC {
 		) {
 			throw new Error(`invalid MAC: ${text}`)
 		}
-		//(this.#values = text.split(/[.:-]/).map(s => parseInt(s, 16))).some(val => isNaN(val) || val < 0 || val > 255) ||
-		// this.#values.length != 6) 
 	}
 
 }

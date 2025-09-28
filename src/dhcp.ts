@@ -32,12 +32,6 @@ export class DHCP extends NetworkRange implements IDHCP {
 		let
 			startOctets = address.octets,
 			endOctets = broadcast.octets;
-		// if (shrink) {
-		// 	//skip Network Address
-		// 	startOctets[3] += 1;
-		// 	//skip Broadcast Address
-		// 	endOctets[3] -= 1;
-		// }
 		super(SubnetAdress.from(startOctets), SubnetAdress.from(endOctets));
 	}
 }

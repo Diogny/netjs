@@ -35,11 +35,8 @@ export class Subnet extends CIDR implements ISubnet {
 		//create network address
 		const address = this.ip.and(this.subnetMask);
 		//create broadcast address
-		// const netClass = NetworkClass.defaultClass(this.type) as NetworkClass;
-		//netClass.privateRange.to has the last IP in case of
-		// Class C 172.16.0.0 - 172.31.255.255
 		const broadcast = address.or(this.hostMask); // IP.fromMask(this.address.or(this.mask.not()));
-		//
+		//create DHCP network range
 		this.dhcp = new DHCP(address, broadcast);
 	}
 }

@@ -92,24 +92,9 @@ export class NetworkClass implements INetworkClass {
 	 * @returns 
 	 */
 	static defaultClass(type: NetClassType): NetworkClass | undefined {
-		// //Class A
-		// const ndx = type.charCodeAt(type.length - 1) - 65;
-		// let netClass = DefaultNetworkClassArray[ndx];
-		// if (!netClass && type === NetworkClassAny) {
-		// 	netClass = DefaultNetworkClassAny;
-		// }
-		// return netClass
 		return DefaultNetworkClassMap[type];
 	}
 }
-
-// const DefaultNetworkClassAny = new NetworkClass(NetworkClassAny);
-// const DefaultNetworkClassA = new NetworkClass(NetworkClassA);
-// const DefaultNetworkClassB = new NetworkClass(NetworkClassB);
-// const DefaultNetworkClassC = new NetworkClass(NetworkClassC);
-
-// //create an object map instead
-// const DefaultNetworkClassArray = [DefaultNetworkClassA, DefaultNetworkClassB, DefaultNetworkClassC] as const;
 
 const DefaultNetworkClassMap: { [key in NetClassType]: NetworkClass } = {
 	[NetworkClassAny]: new NetworkClass(NetworkClassAny),

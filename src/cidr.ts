@@ -54,13 +54,9 @@ export class CIDR implements ICIDR {
 		if (this.cidr < CIDR.Min || this.cidr > CIDR.Max) {
 			throw new Error(`invalid CIDR: ${this.cidr}, ${CIDR.Min}-${CIDR.Max}`);
 		}
-		// const m = SubnetMask.fromCIDR(this.cidr);
-		// let mask = chunkString(padRight(new Array(this.cidr + 1).join('1'), 32, "0"), 8).map(v => parseInt(v, 2));
+		//
 		this.subnetMask = SubnetMask.fromCIDR(this.cidr);
-		// //compare m with mask and see if equal
-		// if (!m.equal(this.subnetMask)) {
-		// 	console.log(m, ' NOT EQUAL ', this.subnetMask)
-		// }
+		//
 		this.hostMask = SubnetAdress.from(this.subnetMask.not());
 		this.ip = new IP(match.groups?.ip ?? "");
 	}

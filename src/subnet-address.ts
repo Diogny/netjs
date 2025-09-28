@@ -113,34 +113,22 @@ export class SubnetAdress implements ISubnetAdress {
 			to.octets.every((value, ndx) => value == this.#octets[ndx])
 	}
 
-	//https://stackoverflow.com/questions/6798111/bitwise-operations-on-32-bit-unsigned-ints
-	//https://stackoverflow.com/questions/1133473/understanding-javascript-bitwise-not-operator-and-tostring-function
-	//https://www.google.com/search?q=javascript+bitwise+not+unsigned+int&sca_esv=dad87895c19efbc5&sxsrf=AE3TifOePBywjbumRL3zXgJ1byg4pYI7WQ%3A1757548412808&ei=fA_CaJuIMZC0wN4P9uGvyAg&oq=javascript+bitwise+not+unsigned&gs_lp=Egxnd3Mtd2l6LXNlcnAiH2phdmFzY3JpcHQgYml0d2lzZSBub3QgdW5zaWduZWQqAggAMgUQIRigATIFECEYoAEyBRAhGKABMgUQIRigATIFECEYoAEyBRAhGKsCSKk3ULkTWIgjcAF4AZABAJgB9gGgAYMJqgEFNS4yLjK4AQPIAQD4AQGYAgqgAqIJwgIHECMYsAMYJ8ICChAAGLADGNYEGEfCAgQQIxgnwgIGEAAYFhgewgIIEAAYFhgKGB7CAgsQABiABBiGAxiKBcICBRAAGO8FwgIIEAAYgAQYogTCAgUQIRifBZgDAIgGAZAGCZIHBTYuMi4yoAfaMbIHBTUuMi4yuAebCcIHBTAuOC4yyAcW&sclient=gws-wiz-serp
 	not(): ISubnetAdress {
-		//(~1 >>> 0).toString(2)
-		//'11111111111111111111111111111110'
-		// (~1 >>> 0) & 255  == 254
 		let not = this.octets.map(v => (~v >>> 0) & 255);  //(v => [...pad(v.toString(2), 8, '0')].map(c => Math.abs(~c) & 1).join('')).map(s => parseInt(s, 2));
 		return SubnetAdress.from(not)
 	}
 
 	and(mask: ISubnetAdress): ISubnetAdress {
-		// let and = Number(BigInt(this.value) & BigInt(mask.value));
-		// return new SubnetAdress(chunkString(pad(and.toString(2), 32, "0"), 8).map(s => parseInt(s, 2)))
 		const maskOctets = mask.octets;
 		return SubnetAdress.from(this.octets.map((val, ndx) => val & maskOctets[ndx]));
 	}
 
 	or(mask: ISubnetAdress): ISubnetAdress {
-		// let or = Number(BigInt(this.value) | BigInt(mask.value));
-		// return new SubnetAdress(chunkString(pad(or.toString(2), 32, "0"), 8).map(s => parseInt(s, 2)))
 		const maskOctets = mask.octets;
 		return SubnetAdress.from(this.octets.map((val, ndx) => val | maskOctets[ndx]));
 	}
 
 	xor(mask: ISubnetAdress): ISubnetAdress {
-		// let xor = Number(BigInt(this.value) ^ BigInt(mask.value));
-		// return new SubnetAdress(chunkString(pad(xor.toString(2), 32, "0"), 8).map(s => parseInt(s, 2)))
 		const maskOctets = mask.octets;
 		return SubnetAdress.from(this.octets.map((val, ndx) => val ^ maskOctets[ndx]));
 	}
