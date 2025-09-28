@@ -1,4 +1,11 @@
-import { pad } from "dabbjs";
+/**
+ * used for string & numbers
+ * @param t string
+ * @param e amount
+ * @param ch pad char
+ */
+export const pad = (t: string, e: number, ch?: any) =>
+  new Array(Math.max(0, (e || 2) + 1 - String(t).length)).join(ch || '0') + t;
 
 /**
  * converts an string to a number, or NaN if invalid integer

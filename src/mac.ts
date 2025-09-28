@@ -1,5 +1,4 @@
-import { pad } from "dabbjs";
-import { chunkString } from "./math";
+import { chunkString, pad } from "./lib";
 
 export interface IMAC {
 	/** returns the six values in decimal numbers */

@@ -1,5 +1,4 @@
-import { pad } from "dabbjs";
-import { chunkString, integer } from "./math";
+import { chunkString, integer, pad } from "./lib";
 
 export const
 	NetworkAdressText = "NetworkAddress",
