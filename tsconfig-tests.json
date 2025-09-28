@@ -1,0 +1,9 @@
+{
+	"compilerOptions": {
+		"target": "esnext",  // "es6", //Node.JS 6+ support ES6
+		"module": "commonjs",
+		// require for configurate tsconfig-paths
+		"outDir": "./ts",
+		"sourceMap": true
+	}
+}

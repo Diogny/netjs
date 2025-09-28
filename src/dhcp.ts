@@ -1,5 +1,5 @@
 import { INetworkRange, NetworkRange } from "./network-range";
-import { BroadcastAddressText, ISubnetAdress, NetworkAdressText, SubnetAdress } from "./subnet-address";
+import { BroadcastAddressText, ISubnetAddress, NetworkAddressText, SubnetAddress } from "./subnet-address";
 
 export interface IDHCP extends INetworkRange {
 	/** returns the amount of host in the Network Range */
@@ -20,7 +20,7 @@ export class DHCP extends NetworkRange implements IDHCP {
 
 	/** return the string representation of the DHCP range */
 	get range(): string {
-		return `${this.address.offset(NetworkAdressText)} - ${this.broadcast.offset(BroadcastAddressText)}`;
+		return `${this.address.offset(NetworkAddressText)} - ${this.broadcast.offset(BroadcastAddressText)}`;
 	}
 
 	/**
@@ -28,10 +28,10 @@ export class DHCP extends NetworkRange implements IDHCP {
 	 * @param address Network Address or IP start
 	 * @param broadcast Network Broadcast Address or IP end
 	 */
-	constructor(address: ISubnetAdress, broadcast: ISubnetAdress) {
+	constructor(address: ISubnetAddress, broadcast: ISubnetAddress) {
 		let
 			startOctets = address.octets,
 			endOctets = broadcast.octets;
-		super(SubnetAdress.from(startOctets), SubnetAdress.from(endOctets));
+		super(SubnetAddress.from(startOctets), SubnetAddress.from(endOctets));
 	}
 }

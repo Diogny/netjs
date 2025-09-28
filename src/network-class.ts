@@ -1,6 +1,7 @@
 import { NetClassType, NetworkClassA, NetworkClassAny, NetworkClassB, NetworkClassC, NetworkClassD, NetworkClassE } from "./common";
-import { INetworkRange, NetworkRange } from "./network-range";
-import { ISubnetAdress, SubnetAdress } from "./subnet-address";
+import { NetworkNamedRange } from "./network-named-range";
+import { INetworkRangeManager, NetworkRangeManager } from "./network-range-manager";
+import { ISubnetAddress, SubnetAddress } from "./subnet-address";
 
 export interface INetworkClass {
 	/** return the network class type */
@@ -9,28 +10,24 @@ export interface INetworkClass {
 	get startCIDR(): number;
 	/** returns the default of the CIDR for the class */
 	get defaultCIDR(): number;
-	/** returns the default or public range */
-	get publicRange(): INetworkRange;
-	/** returns the private range */
-	get privateRange(): INetworkRange;
 	/** returns the default subnet mask of the network class */
-	get defaultMask(): ISubnetAdress;
+	get defaultMask(): ISubnetAddress;
+	/** returns the default or `public` range of the network class */
+	get ranges(): INetworkRangeManager;
 }
 
-//really good explanation
-//https://www.meridianoutpost.com/resources/articles/IP-classes.php
-
+/**
+ * Implements a Network class by type of network
+ */
 export class NetworkClass implements INetworkClass {
 
 	readonly startCIDR: number;
 
 	readonly defaultCIDR: number;
 
-	readonly publicRange: INetworkRange;
+	readonly defaultMask: ISubnetAddress;
 
-	readonly privateRange: INetworkRange;
-
-	readonly defaultMask: ISubnetAdress;
+	readonly ranges: INetworkRangeManager;
 
 	/**
 	 * Creates a network class
@@ -41,47 +38,42 @@ export class NetworkClass implements INetworkClass {
 			case NetworkClassAny:
 				this.startCIDR = 1;
 				this.defaultCIDR = 1;
-				this.publicRange = NetworkRange.create("0.0.0.0-255.255.255.255");
-				// private and public same, but shouldn't have a private range, full range
-				this.privateRange = NetworkRange.create("0.0.0.0-255.255.255.255");
-				this.defaultMask = SubnetAdress.from("255.255.255.255");
+				this.defaultMask = SubnetAddress.from("255.255.255.255");
+				this.ranges = new NetworkRangeManager("0.0.0.0-255.255.255.255");
 				break;
 			case NetworkClassA:
 				this.startCIDR = 8;
 				this.defaultCIDR = 8;
-				this.publicRange = NetworkRange.create("1.0.0.0-126.255.255.255");
-				this.privateRange = NetworkRange.create("10.0.0.0-10.255.255.255");
-				this.defaultMask = SubnetAdress.from("255.0.0.0");
+				this.defaultMask = SubnetAddress.from("255.0.0.0");
+				this.ranges = new NetworkRangeManager("1.0.0.0-126.255.255.255");
+				this.ranges.add(new NetworkNamedRange("10.0.0.0-10.255.255.255", void 0, "private"));
+				this.ranges.add(new NetworkNamedRange("127.0.0.0-127.255.255.255", void 0, "special"));
 				break
 			case NetworkClassB:
 				this.startCIDR = 16;
 				this.defaultCIDR = 16;
-				this.publicRange = NetworkRange.create("128.0.0.0-191.255.255.255");
-				this.privateRange = NetworkRange.create("172.16.0.0-172.31.255.255");
-				this.defaultMask = SubnetAdress.from("255.255.0.0");
+				this.defaultMask = SubnetAddress.from("255.255.0.0");
+				this.ranges = new NetworkRangeManager("128.0.0.0-191.255.255.255");
+				this.ranges.add(new NetworkNamedRange("172.16.0.0-172.31.255.255", void 0, "private"));
 				break;
 			case NetworkClassC:
 				this.startCIDR = 16;
 				this.defaultCIDR = 24;
-				this.publicRange = NetworkRange.create("192.0.0.0-223.255.255.255");
-				this.privateRange = NetworkRange.create("192.168.0.0-192.168.255.255");
-				this.defaultMask = SubnetAdress.from("255.255.255.0");
+				this.defaultMask = SubnetAddress.from("255.255.255.0");
+				this.ranges = new NetworkRangeManager("192.0.0.0-223.255.255.255");
+				this.ranges.add(new NetworkNamedRange("192.168.0.0-192.168.255.255", void 0, "private"));
 				break;
 			case NetworkClassD:
 				this.startCIDR = 8;
 				this.defaultCIDR = 8;
-				this.publicRange = NetworkRange.create("224.0.0.0-239.255.255.255");
-				// private and public same, but shouldn't have a private range
-				this.privateRange = NetworkRange.create("224.0.0.0-239.255.255.255");
-				this.defaultMask = SubnetAdress.from("255.0.0.0");
+				this.defaultMask = SubnetAddress.from("255.0.0.0");
+				this.ranges = new NetworkRangeManager("224.0.0.0-239.255.255.255");
 				break;
 			case NetworkClassE:
 				this.startCIDR = 8;
 				this.defaultCIDR = 8;
-				this.publicRange = NetworkRange.create("240.0.0.0-255.255.255.255");
-				// private and public same, but shouldn't have a private range
-				this.privateRange = NetworkRange.create("240.0.0.0-255.255.255.255");
-				this.defaultMask = SubnetAdress.from("255.0.0.0");
+				this.defaultMask = SubnetAddress.from("255.0.0.0");
+				this.ranges = new NetworkRangeManager("240.0.0.0-255.255.255.255");
 				break;
 		}
 	}
@@ -91,7 +83,7 @@ export class NetworkClass implements INetworkClass {
 	 * @param type network class type
 	 * @returns 
 	 */
-	static defaultClass(type: NetClassType): NetworkClass | undefined {
+	static defaultClass(type: NetClassType): NetworkClass {
 		return DefaultNetworkClassMap[type];
 	}
 }

@@ -1,10 +1,12 @@
 import { NetClassArray, NetClassArrayMap, NetClassType, NetworkClassAny } from "./common";
-import { ISubnetAdress, SubnetAdress } from "./subnet-address";
+import { ISubnetAddress, SubnetAddress } from "./subnet-address";
+
+export const localhostIP = "127.0.0.1";
 
 /**
  * interface for a network IP address
  */
-export interface IIP extends ISubnetAdress {
+export interface IIP extends ISubnetAddress {
 	/** return the network class type */
 	get type(): NetClassType;
 	/** returns true if IP is localhost 127.0.0.1 */
@@ -14,7 +16,7 @@ export interface IIP extends ISubnetAdress {
 /**
  * Implements a network IP (Internet Protocol ) address
  */
-export class IP extends SubnetAdress implements IIP {
+export class IP extends SubnetAddress implements IIP {
 
 	get type(): NetClassType {
 		const octet0 = this.octets[0];
@@ -27,6 +29,10 @@ export class IP extends SubnetAdress implements IIP {
 	}
 
 	get localhost(): boolean {
-		return this.toString() == "127.0.0.1";
+		return this.toString() == localhostIP;
+	}
+
+	static localhost(): IIP {
+		return new IP(localhostIP);
 	}
 }

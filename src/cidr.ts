@@ -1,5 +1,5 @@
 import { IIP, IP } from "./ip";
-import { ISubnetAdress, SubnetAdress } from "./subnet-address";
+import { ISubnetAddress, SubnetAddress } from "./subnet-address";
 import { SubnetMask } from "./subnet-mask";
 
 /**
@@ -7,9 +7,9 @@ import { SubnetMask } from "./subnet-mask";
  */
 export interface ICIDR {
 	/** contains the Subnet mask part */
-	subnetMask: ISubnetAdress;
+	subnetMask: ISubnetAddress;
 	/** contains the host mask part, also known as WildCard mask */
-	hostMask: ISubnetAdress;
+	hostMask: ISubnetAddress;
 	/** contains the IP part */
 	ip: IIP;
 	/** contains a valid CIDR number 1-30 {@link CIDR.Min}-{@link CIDR.Max} */
@@ -23,9 +23,9 @@ export interface ICIDR {
  */
 export class CIDR implements ICIDR {
 
-	readonly subnetMask: ISubnetAdress;
+	readonly subnetMask: ISubnetAddress;
 
-	readonly hostMask: ISubnetAdress;
+	readonly hostMask: ISubnetAddress;
 
 	readonly ip: IIP;
 
@@ -57,7 +57,7 @@ export class CIDR implements ICIDR {
 		//
 		this.subnetMask = SubnetMask.fromCIDR(this.cidr);
 		//
-		this.hostMask = SubnetAdress.from(this.subnetMask.not());
+		this.hostMask = SubnetAddress.from(this.subnetMask.not());
 		this.ip = new IP(match.groups?.ip ?? "");
 	}
 }

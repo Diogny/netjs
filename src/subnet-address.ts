@@ -1,15 +1,15 @@
 import { chunkString, integer, pad } from "./lib";
 
 export const
-	NetworkAdressText = "NetworkAddress",
+	NetworkAddressText = "NetworkAddress",
 	BroadcastAddressText = "BroadcastAddress";
-const SubnetAddressOffsetArray = [NetworkAdressText, BroadcastAddressText] as const;
-export type SubnetAdressOffsetType = typeof SubnetAddressOffsetArray[number];
+const SubnetAddressOffsetArray = [NetworkAddressText, BroadcastAddressText] as const;
+export type SubnetAddressOffsetType = typeof SubnetAddressOffsetArray[number];
 
 /**
  * represents a subnet mask with four byte values (0-255), 32-bit 0s & 1s
  */
-export interface ISubnetAdress {
+export interface ISubnetAddress {
 	/** returns the four octets */
 	get octets(): number[];
 	/** returns the four octets formatted as x.x.x.x */
@@ -23,42 +23,61 @@ export interface ISubnetAdress {
 	/** return the string reperesentation like x.x.x.x */
 	toString(): string;
 	/**
+	 * check subnet address is less than other
+	 * @param than another subnet address
+	 */
+	LT(than: ISubnetAddress): boolean;
+	/**
+	 * check subnet address is less or equal than other
+	 * @param than another subnet address
+	 */
+	LTE(than: ISubnetAddress): boolean;
+	/**
 	 * check subnet address been equal
 	 * @param to another subnet address
 	 */
-	equal(to: ISubnetAdress): boolean;
-
+	equals(to: ISubnetAddress): boolean;
+	/**
+	 * check subnet address is greater than other
+	 * @param than another subnet address
+	 */
+	GT(than: ISubnetAddress): boolean;
+	/**
+	 * check subnet address is greater or equal than other
+	 * @param than another subnet address
+	 */
+	GTE(than: ISubnetAddress): boolean;
 	/**
 	 * returns a NOT of the Subnet address
 	 * @returns NOT Subnet mask
 	 */
-	not(): ISubnetAdress;
+	not(): ISubnetAddress;
 	/**
 	 * apply an AND mask to the octets
 	 * @param mask 32-bits 4-byte mask
 	 * @returns masked Subnet mask
 	 */
-	and(mask: ISubnetAdress): ISubnetAdress;
+	and(mask: ISubnetAddress): ISubnetAddress;
 	/**
 	 * apply a OR mask to the octets
 	 * @param mask 32-bits 4-byte mask
 	 * @returns masked Subnet mask
 	 */
-	or(mask: ISubnetAdress): ISubnetAdress;
+	or(mask: ISubnetAddress): ISubnetAddress;
 	/**
 	 * apply a XOR mask to the octets
 	 * @param mask 32-bits 4-byte mask
 	 * @returns masked Subnet mask
 	 */
-	xor(mask: ISubnetAdress): ISubnetAdress;
+	xor(mask: ISubnetAddress): ISubnetAddress;
 	/**
-	 * returns a new Subnet Adrees with 3rd octet offset by a type
+	 * returns a new Subnet Address with 3rd octet offset by a type
 	 * @param value offset value type
 	 */
-	offset(value: SubnetAdressOffsetType): ISubnetAdress;
+	offset(value: SubnetAddressOffsetType): ISubnetAddress;
 }
 
-export class SubnetAdress implements ISubnetAdress {
+export class SubnetAddress implements ISubnetAddress {
 
 	#octets: number[];
 	get octets(): number[] {
@@ -99,45 +118,69 @@ export class SubnetAdress implements ISubnetAdress {
 		if (typeof values == "string") {
 			array = (values ?? "").split(".").map(v => integer(v));	//parseInt
 		} else {
-			array = values;
+			array = Array.from(values);
 		}
 		//check array
 		if (array.length != 4 || array.some(v => v < 0 || v > 255)) {
-			throw new Error(`invalid octets: ${values}`)
+			throw new Error(`invalid octets: [${array.join(",")}]`)
 		}
 		this.#octets = array;
 	}
 
-	equal(to: ISubnetAdress): boolean {
+	LT(than: ISubnetAddress): boolean {
+		let comp = addressComparer(this.octets, than.octets);
+		let result = comp == -1;
+		return result;
+	}
+
+	LTE(than: ISubnetAddress): boolean {
+		let comp = addressComparer(this.octets, than.octets);
+		let result = comp == -1 || comp == 0;
+		return result;
+	}
+
+	equals(to: ISubnetAddress): boolean {
 		return this.#octets.length == to.octets.length &&
 			to.octets.every((value, ndx) => value == this.#octets[ndx])
 	}
 
-	not(): ISubnetAdress {
+	GT(than: ISubnetAddress): boolean {
+		let comp = addressComparer(this.octets, than.octets);
+		let result = comp == 1;
+		return result;
+	}
+
+	GTE(than: ISubnetAddress): boolean {
+		let comp = addressComparer(this.octets, than.octets);
+		let result = comp == 1 || comp == 0;
+		return result;
+	}
+
+	not(): ISubnetAddress {
 		let not = this.octets.map(v => (~v >>> 0) & 255);  //(v => [...pad(v.toString(2), 8, '0')].map(c => Math.abs(~c) & 1).join('')).map(s => parseInt(s, 2));
-		return SubnetAdress.from(not)
+		return SubnetAddress.from(not)
 	}
 
-	and(mask: ISubnetAdress): ISubnetAdress {
+	and(mask: ISubnetAddress): ISubnetAddress {
 		const maskOctets = mask.octets;
-		return SubnetAdress.from(this.octets.map((val, ndx) => val & maskOctets[ndx]));
+		return SubnetAddress.from(this.octets.map((val, ndx) => val & maskOctets[ndx]));
 	}
 
-	or(mask: ISubnetAdress): ISubnetAdress {
+	or(mask: ISubnetAddress): ISubnetAddress {
 		const maskOctets = mask.octets;
-		return SubnetAdress.from(this.octets.map((val, ndx) => val | maskOctets[ndx]));
+		return SubnetAddress.from(this.octets.map((val, ndx) => val | maskOctets[ndx]));
 	}
 
-	xor(mask: ISubnetAdress): ISubnetAdress {
+	xor(mask: ISubnetAddress): ISubnetAddress {
 		const maskOctets = mask.octets;
-		return SubnetAdress.from(this.octets.map((val, ndx) => val ^ maskOctets[ndx]));
+		return SubnetAddress.from(this.octets.map((val, ndx) => val ^ maskOctets[ndx]));
 	}
 
-	offset(value: SubnetAdressOffsetType): ISubnetAdress {
+	offset(value: SubnetAddressOffsetType): ISubnetAddress {
 		let
 			offset = 0;
 		switch (value) {
-			case NetworkAdressText:
+			case NetworkAddressText:
 				offset = 1;
 				break;
 			case BroadcastAddressText:
@@ -145,11 +188,11 @@ export class SubnetAdress implements ISubnetAdress {
 				break;
 		}
 		if (!offset) {
-			return this as ISubnetAdress;
+			return this as ISubnetAddress;
 		}
 		let octets = this.octets;
 		octets[3] += offset;
-		return SubnetAdress.from(octets)
+		return SubnetAddress.from(octets)
 	}
 
 	/**
@@ -157,8 +200,33 @@ export class SubnetAdress implements ISubnetAdress {
 	 * @param address string, or subnet address, or array of numbers
 	 * @returns 
 	 */
-	static from(src: string | ISubnetAdress | number[]): ISubnetAdress {
-		return new SubnetAdress(typeof src == "string" ? src : (Array.isArray(src) ? src : src.octets))
+	static from(src: string | ISubnetAddress | number[]): ISubnetAddress {
+		return new SubnetAddress(typeof src == "string" ? src : (Array.isArray(src) ? src : src.octets))
 	}
 
+}
+
+/**
+ * network address comparer, stops if one octet is greater or less than the other
+ * @param thisOctets 
+ * @param thanOctets 
+ * @returns -1 for less than, 0 for equal, 1 for greater than
+ */
+const addressComparer = (thisOctets: number[], thanOctets: number[]): number => {
+	//start from ndx = 0, if one greater found, return true
+	let ndx = 0;
+	while (ndx < thisOctets.length) {
+		const delta = thisOctets[ndx] - thanOctets[ndx];
+		if (delta > 0) {
+			//found an octet greater in this, is GREATER
+			return 1;
+		} else if (delta < 0) {
+			//found an octet less in this, is LESS
+			return -1;
+		}
+		//else octets are EQUAL
+		ndx++;
+	}
+	//if we reach here,they're EQUAL
+	return 0;
 }

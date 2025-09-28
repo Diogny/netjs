@@ -1,5 +1,6 @@
 export { binary, chunkString, chunkRightString, integer, pad, padRight, removeTrailingZeros } from "./lib";
-export { ISubnetAdress, SubnetAdress } from "./subnet-address";
+export { NetworkClassAny, NetworkClassA, NetworkClassB, NetworkClassC, NetworkClassD, NetworkClassE } from "./common";
+export { ISubnetAddress, SubnetAddress } from "./subnet-address";
 export { ISubnetMask, SubnetMask } from "./subnet-mask";
 export { INetworkRange, NetworkRange } from "./network-range";
 export { INetworkClass, NetworkClass } from "./network-class";

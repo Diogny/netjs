@@ -1,11 +1,11 @@
 import { chunkString, padRight } from "./lib";
-import { ISubnetAdress, SubnetAdress } from "./subnet-address";
+import { ISubnetAddress, SubnetAddress } from "./subnet-address";
 
-export interface ISubnetMask extends ISubnetAdress {
-
+export interface ISubnetMask extends ISubnetAddress {
+	/** */
 }
 
-export class SubnetMask extends SubnetAdress implements ISubnetMask {
+export class SubnetMask extends SubnetAddress implements ISubnetMask {
 
 	/**
 	 * creates a subnet mask from a CIDR number

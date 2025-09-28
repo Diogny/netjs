@@ -7,9 +7,27 @@
 		{
 			"name": "Launch Chrome",
 			"request": "launch",
-			"type": "pwa-chrome",
+			"type": "chrome",
 			"url": "http://localhost:8989",
 			"webRoot": "${workspaceFolder}"
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Current TS File (WORKS)",
+			"args": [
+				"${relativeFile}"
+			],
+			"runtimeArgs": [
+				"--nolazy",
+				"-r",
+				"ts-node/register"
+			],
+			"sourceMaps": true,
+			"cwd": "${workspaceRoot}",
+			"env": {
+				"TS_NODE_PROJECT": "tsconfig-tests.json"
+			}
 		},
 		{
 			"type": "node",
