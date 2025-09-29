@@ -1,7 +1,7 @@
 {
 	"name": "netw0rkjs",
 	"author": "Diogny A. B.",
-	"version": "1.0.6",
+	"version": "1.0.7",
 	"description": "internet network classes to handle IP, MAC, DHCP, CIDR, Subnets, etc",
 	"license": "MIT",
 	"main": "./dist/index.js",
