@@ -2,6 +2,7 @@ import { NetClassArray, NetClassArrayMap, NetClassType, NetworkClassAny } from "
 import { ISubnetAddress, SubnetAddress } from "./subnet-address";
 
 export const localhostIP = "127.0.0.1";
+export const broadcastIP = "255.255.255.255";
 
 /**
  * interface for a network IP address
@@ -32,7 +33,19 @@ export class IP extends SubnetAddress implements IIP {
 		return this.toString() == localhostIP;
 	}
 
+	/**
+	 * localhost or loopback IP `127.0.0.1`
+	 * @returns 
+	 */
 	static localhost(): IIP {
 		return new IP(localhostIP);
+	}
+
+	/**
+	 * broadcast IP `255.255.255.255`
+	 * @returns 
+	 */
+	static broadcast(): IIP {
+		return new IP(broadcastIP);
 	}
 }

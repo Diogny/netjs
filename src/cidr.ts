@@ -19,7 +19,9 @@ export interface ICIDR {
 }
 
 /**
- * implements a network CIDR mask scheme like 192.168.0.1/24
+ * Classless Inter-Domain Routing (CIDR)
+ * 
+ * Implements a network CIDR mask scheme like 192.168.0.1/24
  */
 export class CIDR implements ICIDR {
 
@@ -60,4 +62,5 @@ export class CIDR implements ICIDR {
 		this.hostMask = SubnetAddress.from(this.subnetMask.not());
 		this.ip = new IP(match.groups?.ip ?? "");
 	}
+
 }

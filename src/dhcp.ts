@@ -7,7 +7,9 @@ export interface IDHCP extends INetworkRange {
 }
 
 /**
- * implements a DHCP pool network range
+ * Dynamic Host Configuration Protocol (DHCP).
+ * 
+ * Implements a DHCP pool network range
  * 
  * even start & broadcast addresses are same a {@link NetworkRange} the {@link hosts} property returns network range - 2
  */

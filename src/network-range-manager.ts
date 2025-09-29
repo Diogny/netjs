@@ -3,7 +3,7 @@ import { INetworkNamedRange, NetworkNamedRange, publicRangeName } from "./networ
 export interface INetworkRangeManager {
 
 	/** get the registered sub-ranges */
-	get subRanges(): INetworkNamedRange[];
+	get all(): INetworkNamedRange[];
 	/** returns the default or `public` network range created initially with manager constructor */
 	get default(): INetworkNamedRange;
 	/**
@@ -31,14 +31,17 @@ export interface INetworkRangeManager {
  */
 export class NetworkRangeManager implements INetworkRangeManager {
 
-	readonly subRanges: INetworkNamedRange[];
+	#all: INetworkNamedRange[];
+	get all(): INetworkNamedRange[] {
+		return Array.from(this.#all);
+	}
 
 	/**
 	 * creates a network range manager with default `public` range
 	 * @param publicRange string with full network range like x.x.x.x - x.x.x.x
 	 */
 	constructor(publicRange: string) {
-		this.subRanges = [new NetworkNamedRange(publicRange, void 0, publicRangeName)];
+		this.#all = [new NetworkNamedRange(publicRange, void 0, publicRangeName)];
 	}
 
 	get default(): INetworkNamedRange {
@@ -46,11 +49,11 @@ export class NetworkRangeManager implements INetworkRangeManager {
 	}
 
 	has(name: string): boolean {
-		return !!this.subRanges.find(r => r.name == name)
+		return !!this.#all.find(r => r.name == name)
 	}
 
 	find(name: string): INetworkNamedRange | undefined {
-		return this.subRanges.find(r => r.name == name)
+		return this.#all.find(r => r.name == name)
 	}
 
 	add(range: INetworkNamedRange): boolean {
@@ -58,7 +61,7 @@ export class NetworkRangeManager implements INetworkRangeManager {
 		if (this.has(range.name)) {
 			return false;
 		}
-		this.subRanges.push(range.clone());
+		this.#all.push(range.clone());
 		return true
 	}
 
