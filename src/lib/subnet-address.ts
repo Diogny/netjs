@@ -212,7 +212,7 @@ export class SubnetAddress implements ISubnetAddress {
  * @param thanOctets 
  * @returns -1 for less than, 0 for equal, 1 for greater than
  */
-const addressComparer = (thisOctets: number[], thanOctets: number[]): number => {
+export const addressComparer = (thisOctets: number[], thanOctets: number[]): number => {
 	//start from ndx = 0, if one greater found, return true
 	let ndx = 0;
 	while (ndx < thisOctets.length) {

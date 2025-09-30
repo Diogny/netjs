@@ -1,6 +1,6 @@
-import { ISubnetAddress, SubnetAddress } from "./lib/subnet-address";
+import { ISubnetAddress, SubnetAddress, addressComparer } from "./lib/subnet-address";
 import { ISubnetMask, SubnetMask } from "./lib/subnet-mask";
-import { INetworkRange, NetworkRange } from "./lib/network-range";
+import { INetworkRange, NetworkRange, parseRange } from "./lib/network-range";
 import { INetworkClass, NetworkClass } from "./lib/network-class";
 import { IDHCP, DHCP } from "./lib/dhcp";
 import { IIP, IP } from "./lib/ip";
@@ -9,9 +9,9 @@ import { ICIDR, CIDR } from "./lib/cidr";
 import { ISubnet, Subnet } from "./lib/subnet";
 
 export {
-	ISubnetAddress, SubnetAddress,
+	ISubnetAddress, SubnetAddress, addressComparer,
 	ISubnetMask, SubnetMask,
-	INetworkRange, NetworkRange,
+	INetworkRange, NetworkRange, parseRange,
 	INetworkClass, NetworkClass,
 	IDHCP, DHCP,
 	IIP, IP,
@@ -20,6 +20,18 @@ export {
 	ISubnet, Subnet
 }
 export {
-	binary, chunkString, chunkRightString, integer, pad, padRight, removeTrailingZeros,
-	NetworkClassAny, NetworkClassA, NetworkClassB, NetworkClassC, NetworkClassD, NetworkClassE
+	binary,
+	chunkString,
+	chunkRightString,
+	integer,
+	pad,
+	padRight,
+	removeTrailingZeros,
+	NetClassType,
+	NetworkClassAny,
+	NetworkClassA,
+	NetworkClassB,
+	NetworkClassC,
+	NetworkClassD,
+	NetworkClassE
 } from "./lib/common";
