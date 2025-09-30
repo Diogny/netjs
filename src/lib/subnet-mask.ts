@@ -1,4 +1,4 @@
-import { chunkString, padRight } from "./lib";
+import { chunkString, padRight } from "./common";
 import { ISubnetAddress, SubnetAddress } from "./subnet-address";
 
 export interface ISubnetMask extends ISubnetAddress {

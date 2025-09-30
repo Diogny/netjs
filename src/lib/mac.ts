@@ -1,4 +1,4 @@
-import { chunkString, pad } from "./lib";
+import { chunkString, pad } from "./common";
 
 export interface IMAC {
 	/** returns the six values in decimal numbers */

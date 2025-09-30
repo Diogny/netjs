@@ -1,12 +1,12 @@
-import { ISubnetAddress, SubnetAddress } from "./subnet-address";
-import { ISubnetMask, SubnetMask } from "./subnet-mask";
-import { INetworkRange, NetworkRange } from "./network-range";
-import { INetworkClass, NetworkClass } from "./network-class";
-import { IDHCP, DHCP } from "./dhcp";
-import { IIP, IP } from "./ip";
-import { IMAC, MAC } from "./mac";
-import { ICIDR, CIDR } from "./cidr";
-import { ISubnet, Subnet } from "./subnet";
+import { ISubnetAddress, SubnetAddress } from "./lib/subnet-address";
+import { ISubnetMask, SubnetMask } from "./lib/subnet-mask";
+import { INetworkRange, NetworkRange } from "./lib/network-range";
+import { INetworkClass, NetworkClass } from "./lib/network-class";
+import { IDHCP, DHCP } from "./lib/dhcp";
+import { IIP, IP } from "./lib/ip";
+import { IMAC, MAC } from "./lib/mac";
+import { ICIDR, CIDR } from "./lib/cidr";
+import { ISubnet, Subnet } from "./lib/subnet";
 
 export {
 	ISubnetAddress, SubnetAddress,
@@ -19,5 +19,7 @@ export {
 	ICIDR, CIDR,
 	ISubnet, Subnet
 }
-export { binary, chunkString, chunkRightString, integer, pad, padRight, removeTrailingZeros } from "./lib";
-export { NetworkClassAny, NetworkClassA, NetworkClassB, NetworkClassC, NetworkClassD, NetworkClassE } from "./common";
+export {
+	binary, chunkString, chunkRightString, integer, pad, padRight, removeTrailingZeros,
+	NetworkClassAny, NetworkClassA, NetworkClassB, NetworkClassC, NetworkClassD, NetworkClassE
+} from "./lib/common";

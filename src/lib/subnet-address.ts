@@ -1,4 +1,4 @@
-import { chunkString, integer, pad } from "./lib";
+import { chunkString, integer, pad } from "./common";
 
 export const
 	NetworkAddressText = "NetworkAddress",
